@@ -121,11 +121,6 @@ class RPCManager:
             # Prepare activity data (remove None values)
             rpc_data = {k: v for k, v in activity.items() if v is not None}
             
-            # Handle buttons separately (pypresence expects list of dicts)
-            buttons = rpc_data.pop('buttons', None)
-            if buttons:
-                rpc_data['buttons'] = buttons
-            
             # Update presence
             self.logger.info(f"Updating Discord activity: {rpc_data}")
             self.client.update(**rpc_data)
@@ -181,6 +176,7 @@ class RPCManager:
             
             # Wait before next check (with early exit on event)
             if self._reconnect_event.wait(timeout=10):
+                self._reconnect_thread = None # clear the thread
                 break
     
     def get_status(self) -> str:

@@ -179,6 +179,7 @@ Profiles are stored as JSON files. Example:
 {
   "name": "Example Profile",
   "app_id": "1234567890123456789",
+  "game_name": "Example Game",
   "details": "Playing a game",
   "state": "In a match",
   "start_timestamp": 1612345678,

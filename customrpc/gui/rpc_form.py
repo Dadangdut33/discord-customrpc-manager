@@ -47,10 +47,10 @@ class RPCForm(QWidget):
         text_group = QGroupBox("Details")
         text_layout = QFormLayout()
 
-        self.name_input = QLineEdit()
-        self.name_input.setPlaceholderText("Name of the game (max 128 chars)")
-        self.name_input.textChanged.connect(self.data_changed.emit)
-        text_layout.addRow("Name:", self.name_input)
+        self.game_name_input = QLineEdit()
+        self.game_name_input.setPlaceholderText("Name of the game (max 128 chars)")
+        self.game_name_input.textChanged.connect(self.data_changed.emit)
+        text_layout.addRow("Name:", self.game_name_input)
         
         self.details_input = QLineEdit()
         self.details_input.setPlaceholderText("What you're doing (max 128 chars)")
@@ -224,7 +224,7 @@ class RPCForm(QWidget):
         """
         data = {
             'app_id': self.app_id_input.text().strip(),
-            'name': self.name_input.text().strip() or None,
+            'game_name': self.game_name_input.text().strip() or None,
             'details': self.details_input.text().strip() or None,
             'state': self.state_input.text().strip() or None,
             'large_image_key': self.large_image_key.text().strip() or None,
@@ -263,7 +263,7 @@ class RPCForm(QWidget):
             data: Dictionary with form data
         """
         self.app_id_input.setText(data.get('app_id', ''))
-        self.name_input.setText(data.get('name', ''))
+        self.game_name_input.setText(data.get('game_name', ''))
         self.details_input.setText(data.get('details', ''))
         self.state_input.setText(data.get('state', ''))
         self.large_image_key.setText(data.get('large_image_key', ''))
@@ -299,7 +299,7 @@ class RPCForm(QWidget):
     def clear(self) -> None:
         """Clear all form fields."""
         self.app_id_input.clear()
-        self.name_input.clear()
+        self.game_name_input.clear()
         self.details_input.clear()
         self.state_input.clear()
         self.large_image_key.clear()

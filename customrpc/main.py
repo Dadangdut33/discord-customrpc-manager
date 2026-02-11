@@ -281,8 +281,8 @@ class CustomRPCApp:
         """Build activity dict from profile data."""
         activity = {}
 
-        if data.get('name'):
-            activity['name'] = data['name']
+        if data.get('game_name'):
+            activity['name'] = data['game_name']
         if data.get('details'):
             activity['details'] = data['details']
         if data.get('state'):
