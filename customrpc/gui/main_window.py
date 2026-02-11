@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
         self.rpc = rpc_manager
         self.startup = startup_manager
         self.logger_manager = logger_manager
-        self.logger = logging.getLogger("customrpc.gui")
+        self.logger = logging.getLogger("customrpcmanager.gui")
         self.icon_manager = IconManager()
         
         self.log_viewer = None

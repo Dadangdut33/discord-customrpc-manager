@@ -1,5 +1,5 @@
 """
-Profile manager for CustomRPC.
+Profile manager for CustomRPCManager.
 
 Handles CRUD operations for RPC profiles.
 """
@@ -23,7 +23,7 @@ class ProfileManager:
         """
         self.profiles_dir = profiles_dir
         self.profiles_dir.mkdir(parents=True, exist_ok=True)
-        self.logger = logging.getLogger("customrpc.profiles")
+        self.logger = logging.getLogger("customrpcmanager.profiles")
     
     def _get_profile_path(self, profile_name: str) -> Path:
         """Get file path for profile."""

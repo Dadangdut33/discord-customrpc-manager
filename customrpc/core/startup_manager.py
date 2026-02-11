@@ -14,7 +14,7 @@ import logging
 class StartupManager:
     """Manages application autostart across different operating systems."""
     
-    def __init__(self, app_name: str = "CustomRPC", app_path: Optional[Path] = None):
+    def __init__(self, app_name: str = "CustomRPCManager", app_path: Optional[Path] = None):
         """
         Initialize startup manager.
         
@@ -24,7 +24,7 @@ class StartupManager:
         """
         self.app_name = app_name
         self.app_path = app_path or Path(sys.argv[0]).resolve()
-        self.logger = logging.getLogger("customrpc.startup")
+        self.logger = logging.getLogger("customrpcmanager.startup")
     
     def is_enabled(self) -> bool:
         """

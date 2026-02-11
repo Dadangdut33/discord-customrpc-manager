@@ -1,5 +1,5 @@
 """
-CLI argument parser for CustomRPC.
+CLI argument parser for CustomRPCManager.
 
 Handles command-line interface arguments and options.
 """
@@ -23,12 +23,12 @@ class CLIParser:
             Configured ArgumentParser
         """
         parser = argparse.ArgumentParser(
-            prog='customrpc',
+            prog='customrpcmanager',
             description='CustomRPC Manager - Discord Rich Presence Manager',
             epilog='Examples:\n'
-                   '  customrpc --list-profiles'
-                   '  customrpc --profile "Gaming" --connect\n'
-                   '  customrpc --disconnect\n',
+                   '  customrpcmanager --list-profiles'
+                   '  customrpcmanager --profile "Gaming" --connect\n'
+                   '  customrpcmanager --disconnect\n',
             formatter_class=argparse.RawDescriptionHelpFormatter
         )
         

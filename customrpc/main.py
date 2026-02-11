@@ -43,14 +43,14 @@ class CustomRPCApp:
         # Initialize logger
         self.logger_manager = LoggerManager(
             self.config.logs_dir,
-            "customrpc"
+            "customrpcmanager"
         )
         self.logger = self.logger_manager.get_logger()
         
         # Initialize managers
         self.profiles = ProfileManager(self.config.profiles_dir)
         self.rpc = RPCManager()
-        self.startup = StartupManager("CustomRPC")
+        self.startup = StartupManager("CustomRPCManager")
         
         # Single instance management
         lock_file = self.config.config_dir / ".lock"
@@ -238,7 +238,8 @@ class CustomRPCApp:
             profile_name = self.main_window.profile_combo.currentText()
             self.main_window.update_connection_status(True, f"Connected - {profile_name}")
             self.tray.update_status(True)
-            self.tray.show_message("CustomRPC", "Connected to Discord")
+            if self.config.get('notify_on_status_change', True):
+                self.tray.show_message("CustomRPC Manager", "Connected to Discord")
         else:
             self.main_window.update_connection_status(False, "Connection Failed")
             self.tray.update_status(False)
@@ -251,7 +252,8 @@ class CustomRPCApp:
             self.main_window.update_connection_status(False)
         
         self.tray.update_status(False)
-        self.tray.show_message("CustomRPC", "Disconnected from Discord")
+        if self.config.get('notify_on_status_change', True):
+            self.tray.show_message("CustomRPC Manager", "Disconnected from Discord")
     
     def _auto_connect(self, profile_name: str):
         """Auto-connect with profile."""
@@ -442,7 +444,8 @@ class CustomRPCApp:
         elif action == 'disconnect':
             self._handle_disconnect()
             output = "Disconnected from Discord RPC\n"
-            self.tray.show_message("CustomRPC", "Disconnected via CLI")
+            if self.config.get('notify_on_status_change', True):
+                self.tray.show_message("CustomRPC Manager", "Disconnected via CLI")
         elif action == 'connect':
             profile_name = command.get('profile')
             if profile_name:
@@ -455,7 +458,8 @@ class CustomRPCApp:
                         self.rpc.update_activity(activity)
                         self.tray.update_status(True)
                         output = f"Connected to Discord RPC with profile: {profile_name}\n"
-                        self.tray.show_message("CustomRPC", f"Connected with profile: {profile_name}")
+                        if self.config.get('notify_on_status_change', True):
+                            self.tray.show_message("CustomRPC Manager", f"Connected with profile: {profile_name}")
                         if self.main_window:
                             self.main_window.update_connection_status(True, f"Connected - {profile_name}")
                     else:

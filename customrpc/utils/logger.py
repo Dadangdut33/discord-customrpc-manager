@@ -33,7 +33,7 @@ class GUILogHandler(logging.Handler, QObject):
 class LoggerManager:
     """Manages application logging to file and GUI."""
     
-    def __init__(self, log_dir: Path, app_name: str = "customrpc"):
+    def __init__(self, log_dir: Path, app_name: str = "customrpcmanager"):
         """
         Initialize logger manager.
         

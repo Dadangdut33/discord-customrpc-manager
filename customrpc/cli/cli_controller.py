@@ -27,7 +27,7 @@ class CLIController:
         self.profiles = profile_manager
         self.rpc = rpc_manager
         self.ipc_client = ipc_client
-        self.logger = logging.getLogger("customrpc.cli")
+        self.logger = logging.getLogger("customrpcmanager.cli")
     
     def execute_list_profiles(self) -> int:
         """

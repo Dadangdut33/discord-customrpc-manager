@@ -137,7 +137,7 @@ class LogViewer(QDialog):
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             "Export Logs",
-            str(Path.home() / "customrpc_logs.txt"),
+            str(Path.home() / "customrpcmanager_logs.txt"),
             "Text Files (*.txt);;All Files (*)"
         )
         

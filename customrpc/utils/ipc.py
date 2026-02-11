@@ -36,7 +36,7 @@ class IPCServer:
         self.socket: Optional[socket.socket] = None
         self.port = port
         self.response_callback = response_callback
-        self.logger = logging.getLogger("customrpc.ipc")
+        self.logger = logging.getLogger("customrpcmanager.ipc")
         
     def start(self) -> int:
         """
@@ -114,7 +114,7 @@ class IPCClient:
             port: Port to connect to
         """
         self.port = port
-        self.logger = logging.getLogger("customrpc.ipc")
+        self.logger = logging.getLogger("customrpcmanager.ipc")
     
     def send_command(self, command: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -164,7 +164,7 @@ class SingleInstanceManager:
         self.lock_file = lock_file
         self.port_file = port_file
         self.lock_fd: Optional[Any] = None
-        self.logger = logging.getLogger("customrpc.ipc")
+        self.logger = logging.getLogger("customrpcmanager.ipc")
         
         # Ensure parent directory exists
         self.lock_file.parent.mkdir(parents=True, exist_ok=True)

@@ -82,6 +82,9 @@ class SettingsDialog(QDialog):
         
         self.minimize_to_tray_check = QCheckBox("Minimize to tray")
         behavior_layout.addWidget(self.minimize_to_tray_check)
+
+        self.notify_on_status_change = QCheckBox("Notify on Status Change")
+        behavior_layout.addWidget(self.notify_on_status_change)
         
         behavior_group.setLayout(behavior_layout)
         layout.addWidget(behavior_group)
@@ -128,6 +131,7 @@ class SettingsDialog(QDialog):
         
         # Behavior
         self.minimize_to_tray_check.setChecked(self.config.get('minimize_to_tray', True))
+        self.notify_on_status_change.setChecked(self.config.get('notify_on_status_change', True))
 
     def save_settings(self) -> None:
         """Save settings to config."""
@@ -164,6 +168,7 @@ class SettingsDialog(QDialog):
         
         # Behavior
         self.config.set('minimize_to_tray', self.minimize_to_tray_check.isChecked())
+        self.config.set('notify_on_status_change', self.notify_on_status_change.isChecked())
         
         # Emit signal
         self.settings_changed.emit()

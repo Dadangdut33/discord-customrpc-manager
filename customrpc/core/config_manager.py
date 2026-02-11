@@ -1,5 +1,5 @@
 """
-Configuration manager for CustomRPC.
+Configuration manager for CustomRPCManager.
 
 Handles application settings and OS-specific paths.
 """
@@ -16,7 +16,7 @@ class ConfigManager:
     
     def __init__(self):
         """Initialize configuration manager."""
-        self.logger = logging.getLogger("customrpc.config")
+        self.logger = logging.getLogger("customrpcmanager.config")
         self.config_dir = self._get_config_dir()
         self.config_file = self.config_dir / "config.json"
         self.profiles_dir = self.config_dir / "profiles"
@@ -38,16 +38,16 @@ class ConfigManager:
             Path to config directory
         """
         if sys.platform == "win32":
-            # Windows: %APPDATA%/CustomRPC
+            # Windows: %APPDATA%/CustomRPCManager
             base = Path(os.environ.get('APPDATA', Path.home() / 'AppData' / 'Roaming'))
-            return base / "CustomRPC"
+            return base / "CustomRPCManager"
         elif sys.platform == "darwin":
-            # macOS: ~/Library/Application Support/CustomRPC
-            return Path.home() / "Library" / "Application Support" / "CustomRPC"
+            # macOS: ~/Library/Application Support/CustomRPCManager
+            return Path.home() / "Library" / "Application Support" / "CustomRPCManager"
         else:
-            # Linux: ~/.config/customrpc
+            # Linux: ~/.config/CustomRPCManager
             config_home = os.environ.get('XDG_CONFIG_HOME', Path.home() / '.config')
-            return Path(config_home) / "customrpc"
+            return Path(config_home) / "CustomRPCManager"
     
     def _load_config(self) -> Dict[str, Any]:
         """
@@ -85,7 +85,8 @@ class ConfigManager:
             "last_profile": None,
             "minimize_to_tray": True,
             "start_minimized": False,
-            "log_level": "INFO"
+            "log_level": "INFO",
+            "notify_on_status_change": True,
         }
     
     def _save_config(self, config: Optional[Dict[str, Any]] = None) -> None:

@@ -24,7 +24,7 @@ class RPCManager:
     
     def __init__(self):
         """Initialize RPC manager."""
-        self.logger = logging.getLogger("customrpc.rpc")
+        self.logger = logging.getLogger("customrpcmanager.rpc")
         self.client: Optional[Presence] = None
         self.client_id: Optional[str] = None
         self.status = RPCStatus.DISCONNECTED

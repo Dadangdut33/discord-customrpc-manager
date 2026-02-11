@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Development script to kill all running CustomRPC instances.
+Development script to kill all running CustomRPCManager instances.
 Useful when the app bugs out and the window/tray is not visible.
 Cross-platform support (Linux, macOS, Windows).
 """
@@ -14,7 +14,7 @@ from pathlib import Path
 
 
 def find_customrpc_processes():
-    """Find all CustomRPC processes."""
+    """Find all CustomRPCManager processes."""
     processes = []
     
     for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
@@ -23,7 +23,7 @@ def find_customrpc_processes():
             if cmdline:
                 cmdline_str = ' '.join(cmdline)
                 # Check if it's a Python process running customrpc
-                if 'python' in proc.info['name'].lower() and 'customrpc' in cmdline_str:
+                if 'python' in proc.info['name'].lower() and 'customrpcmanager' in cmdline_str:
                     processes.append(proc)
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
@@ -34,7 +34,7 @@ def find_customrpc_processes():
 def kill_processes(processes):
     """Kill processes gracefully, then forcefully if needed."""
     if not processes:
-        print("✅ No CustomRPC processes found running.")
+        print("✅ No CustomRPCManager processes found running.")
         return
     
     print(f"🎯 Found {len(processes)} process(es) to kill")
@@ -70,9 +70,9 @@ def cleanup_lock_files():
     
     # Determine config directory based on platform
     if sys.platform == 'win32':
-        config_dir = Path(os.environ.get('APPDATA', '')) / 'customrpc'
+        config_dir = Path(os.environ.get('APPDATA', '')) / 'customrpcmanager'
     else:
-        config_dir = Path.home() / '.config' / 'customrpc'
+        config_dir = Path.home() / '.config' / 'customrpcmanager'
     
     if config_dir.exists():
         lock_file = config_dir / '.lock'
@@ -97,13 +97,13 @@ def cleanup_lock_files():
 
 def main():
     """Main function."""
-    print("🔍 Searching for CustomRPC processes...")
+    print("🔍 Searching for CustomRPCManager processes...")
     
     # Check lock and port files
     if sys.platform == 'win32':
-        config_dir = Path(os.environ.get('APPDATA', '')) / 'customrpc'
+        config_dir = Path(os.environ.get('APPDATA', '')) / 'customrpcmanager'
     else:
-        config_dir = Path.home() / '.config' / 'customrpc'
+        config_dir = Path.home() / '.config' / 'customrpcmanager'
     
     lock_file = config_dir / '.lock'
     port_file = config_dir / '.port'
@@ -129,7 +129,7 @@ def main():
     processes = find_customrpc_processes()
     
     if processes:
-        print(f"\n📋 Found the following CustomRPC processes:")
+        print(f"\n📋 Found the following CustomRPCManager processes:")
         for proc in processes:
             try:
                 print(f"  PID {proc.pid}: {' '.join(proc.cmdline())}")
@@ -145,7 +145,7 @@ def main():
     remaining = find_customrpc_processes()
     
     if not remaining:
-        print("✅ All CustomRPC processes have been terminated!")
+        print("✅ All CustomRPCManager processes have been terminated!")
     else:
         print(f"⚠️  {len(remaining)} process(es) may still be running:")
         for proc in remaining:
