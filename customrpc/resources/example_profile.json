@@ -1,0 +1,27 @@
+{
+  "name": "Example Profile",
+  "app_id": "1234567890123456789",
+  "details": "Playing a game",
+  "state": "In a match",
+  "start_timestamp": 1612345678,
+  "end_timestamp": null,
+  "large_image_key": "large_image",
+  "large_image_text": "Main game",
+  "small_image_key": "small_image",
+  "small_image_text": "Status icon",
+  "party_size": 2,
+  "party_max": 4,
+  "buttons": [
+    {
+      "label": "Website",
+      "url": "https://example.com"
+    },
+    {
+      "label": "Join Server",
+      "url": "https://discord.gg/example"
+    }
+  ],
+  "instance": true,
+  "created_at": "2024-02-04T12:00:00",
+  "updated_at": "2024-02-04T12:00:00"
+}

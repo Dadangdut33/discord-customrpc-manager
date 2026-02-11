@@ -1,0 +1,132 @@
+/* Dark Theme for CustomRPC Manager */
+
+QWidget {
+    background-color: #2b2b2b;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+QMainWindow {
+    background-color: #1e1e1e;
+}
+
+QPushButton {
+    background-color: #0d7377;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+QPushButton:hover {
+    background-color: #14FFEC;
+    color: #1e1e1e;
+}
+
+QPushButton:pressed {
+    background-color: #0a5f63;
+}
+
+QPushButton:disabled {
+    background-color: #3d3d3d;
+    color: #666666;
+}
+
+QLineEdit, QSpinBox, QComboBox, QTextEdit {
+    background-color: #3d3d3d;
+    border: 1px solid #555555;
+    border-radius: 3px;
+    padding: 5px;
+    color: #e0e0e0;
+}
+
+QLineEdit:focus, QSpinBox:focus, QComboBox:focus {
+    border: 1px solid #14FFEC;
+}
+
+QComboBox::drop-down {
+    border: none;
+    padding-right: 5px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #e0e0e0;
+}
+
+QGroupBox {
+    border: 1px solid #555555;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 5px;
+}
+
+QCheckBox {
+    spacing: 5px;
+}
+
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #555555;
+    border-radius: 3px;
+    background-color: #3d3d3d;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #0d7377;
+    border-color: #14FFEC;
+}
+
+QMenuBar {
+    background-color: #2b2b2b;
+    color: #e0e0e0;
+}
+
+QMenuBar::item:selected {
+    background-color: #0d7377;
+}
+
+QMenu {
+    background-color: #2b2b2b;
+    border: 1px solid #555555;
+}
+
+QMenu::item:selected {
+    background-color: #0d7377;
+}
+
+QStatusBar {
+    background-color: #1e1e1e;
+    color: #888888;
+}
+
+QScrollBar:vertical {
+    background-color: #2b2b2b;
+    width: 12px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #555555;
+    min-height: 20px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #666666;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
