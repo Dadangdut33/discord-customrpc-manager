@@ -1,6 +1,6 @@
 # CustomRPC Manager
 
-A simple, cross-platform (i think so) Discord Rich Presence manager that lets you manually control your Discord status without relying on process detection.
+A simple, cross-platform (i hope so, i have only tested it on linux) Discord Rich Presence manager that lets you manually control your Discord status without relying on process detection.
 
 ## Features
 
@@ -33,7 +33,7 @@ To install this app easily, you can use [pipx](https://github.com/pypa/pipx) or 
 ### Using pipx to install
 
 ```bash
-pipx install git+https://github.com/Dadangdut33/discord-customrpc-manager
+pipx install git+https://github.com/Dadangdut33/discord-customrpc-manager --pip-args="--ignore-requires-python"
 ```
 
 ### Manual
@@ -56,24 +56,20 @@ uv sync
 Or manually:
 
 ```bash
-pip install PyQt6 pypresence
+pip install PyQt6 pypresence pyqtdarktheme qtawesome --ignore-requires-python
 ```
 
-## Usage
+## Usage ❓
 
-### GUI Mode
+### Launching the App
 
-Launch the application:
+If you install from pipx, you can run the application by typing `customrpcmanager` in your terminal. If you want to be able to run the app from your launcher, you can create a shortcut to the executable in your OS application directory. This would be in:
 
-```bash
-python main.py
-```
+- Linux: `~/.local/share/applications/`
+- Windows: `%APPDATA%/Microsoft/Windows/Start Menu/Programs/`
+- macOS: `~/Applications/`
 
-Or start minimized:
-
-```bash
-python main.py --minimized
-```
+If you install manually (as in the git clone way), you can run the application by typing `python main.py` in your terminal.
 
 #### Creating a Profile
 
@@ -158,7 +154,7 @@ customrpc/
 │   ├── game_a.json
 │   └── game_b.json
 └── logs/                # Application logs
-    └── customrpc.log
+    └── customrpcmanager.log
 ```
 
 ## Autostart Setup

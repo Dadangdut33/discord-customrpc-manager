@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import pyqtSignal
 from typing import Dict, Any, Optional
 import time
-from customrpc.utils.validators import (
+from customrpcmanager.utils.validators import (
     validate_app_id, validate_text_field, validate_party_size,
     validate_button_label, validate_url
 )

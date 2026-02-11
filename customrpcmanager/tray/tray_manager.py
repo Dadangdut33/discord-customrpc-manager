@@ -1,5 +1,5 @@
 """
-System tray manager for CustomRPC.
+System tray manager for customrpcmanager.
 
 Provides system tray icon and menu integration.
 """
@@ -7,7 +7,7 @@ Provides system tray icon and menu integration.
 from PyQt6.QtWidgets import QSystemTrayIcon, QMenu
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtCore import QObject, pyqtSignal
-from customrpc.utils.assets import get_icon_path
+from customrpcmanager.utils.assets import get_icon_path
 import logging
 
 
@@ -30,7 +30,7 @@ class TrayManager(QObject):
         """
         super().__init__()
         self.app = app
-        self.logger = logging.getLogger("customrpc.tray")
+        self.logger = logging.getLogger("customrpcmanager.tray")
         self.tray_icon = None
         self.setup_tray()
     

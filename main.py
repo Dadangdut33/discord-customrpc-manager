@@ -1,4 +1,4 @@
-from customrpc.main import main
+from customrpcmanager.main import main
 
 if __name__ == "__main__":
     main()

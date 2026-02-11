@@ -1,5 +1,5 @@
 [project]
-name = "customrpc"
+name = "customrpcmanager"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-customrpc = "customrpc.main:main"
+customrpcmanager = "customrpcmanager.main:main"
 
 [build-system]
 requires = ["setuptools>=61.0"]

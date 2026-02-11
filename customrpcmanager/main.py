@@ -13,23 +13,23 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import QTimer, QSocketNotifier
 
 # Import core modules
-from customrpc.core.config_manager import ConfigManager
-from customrpc.core.profile_manager import ProfileManager
-from customrpc.core.rpc_manager import RPCManager
-from customrpc.core.startup_manager import StartupManager
+from customrpcmanager.core.config_manager import ConfigManager
+from customrpcmanager.core.profile_manager import ProfileManager
+from customrpcmanager.core.rpc_manager import RPCManager
+from customrpcmanager.core.startup_manager import StartupManager
 
 # Import utilities
-from customrpc.utils.logger import LoggerManager
-from customrpc.utils.ipc import SingleInstanceManager, IPCServer, IPCClient
-from customrpc.utils.assets import get_icon_path
+from customrpcmanager.utils.logger import LoggerManager
+from customrpcmanager.utils.ipc import SingleInstanceManager, IPCServer, IPCClient
+from customrpcmanager.utils.assets import get_icon_path
 
 # Import CLI
-from customrpc.cli.cli_parser import CLIParser
-from customrpc.cli.cli_controller import CLIController
+from customrpcmanager.cli.cli_parser import CLIParser
+from customrpcmanager.cli.cli_controller import CLIController
 
 # Import GUI
-from customrpc.gui.main_window import MainWindow
-from customrpc.tray.tray_manager import TrayManager
+from customrpcmanager.gui.main_window import MainWindow
+from customrpcmanager.tray.tray_manager import TrayManager
 
 from pypresence.types import ActivityType
 

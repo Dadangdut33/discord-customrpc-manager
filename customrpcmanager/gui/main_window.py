@@ -18,11 +18,11 @@ from PyQt6.QtCore import Qt, pyqtSignal
 import logging
 from pathlib import Path
 
-from customrpc.gui.rpc_form import RPCForm
-from customrpc.gui.log_viewer import LogViewer
-from customrpc.gui.settings_dialog import SettingsDialog
-from customrpc.gui import profile_dialog
-from customrpc.gui.icon import IconManager
+from customrpcmanager.gui.rpc_form import RPCForm
+from customrpcmanager.gui.log_viewer import LogViewer
+from customrpcmanager.gui.settings_dialog import SettingsDialog
+from customrpcmanager.gui import profile_dialog
+from customrpcmanager.gui.icon import IconManager
 
 
 class MainWindow(QMainWindow):
