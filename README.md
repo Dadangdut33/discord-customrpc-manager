@@ -77,7 +77,7 @@ python main.py --minimized
 
 #### Creating a Profile
 
-1. Click **File** > **New Profile**
+1. Click New Profile Button
 2. Enter a profile name
 3. Fill in the Application ID (from Discord Developer Portal)
 4. Fill in desired RPC fields (all optional except App ID)

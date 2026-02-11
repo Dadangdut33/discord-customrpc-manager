@@ -191,6 +191,7 @@ class CustomRPCApp:
         """Create main window."""
         if not self.main_window:
             self.main_window = MainWindow(
+                self.app,
                 self.config,
                 self.profiles,
                 self.rpc,

@@ -8,8 +8,11 @@ RPC form, and controls.
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QComboBox, QLabel, QStatusBar, QMessageBox,
-    QMenuBar, QMenu, QScrollArea
+    QScrollArea, QGroupBox
 )
+import qtawesome as qta
+import qdarktheme
+
 from PyQt6.QtGui import QAction, QCloseEvent
 from PyQt6.QtCore import Qt, pyqtSignal
 import logging
@@ -19,6 +22,7 @@ from customrpc.gui.rpc_form import RPCForm
 from customrpc.gui.log_viewer import LogViewer
 from customrpc.gui.settings_dialog import SettingsDialog
 from customrpc.gui import profile_dialog
+from customrpc.gui.icon import IconManager
 
 
 class MainWindow(QMainWindow):
@@ -29,11 +33,12 @@ class MainWindow(QMainWindow):
     disconnect_requested = pyqtSignal()
     window_closed = pyqtSignal()
     
-    def __init__(self, config_manager, profile_manager, rpc_manager, startup_manager, logger_manager):
+    def __init__(self, app, config_manager, profile_manager, rpc_manager, startup_manager, logger_manager):
         """
         Initialize main window.
         
         Args:
+            app: QApplication instance
             config_manager: Configuration manager instance
             profile_manager: Profile manager instance
             rpc_manager: RPC manager instance
@@ -41,21 +46,23 @@ class MainWindow(QMainWindow):
             logger_manager: Logger manager instance
         """
         super().__init__()
+        self.app = app
         self.config = config_manager
         self.profiles = profile_manager
         self.rpc = rpc_manager
         self.startup = startup_manager
         self.logger_manager = logger_manager
         self.logger = logging.getLogger("customrpc.gui")
+        self.icon_manager = IconManager()
         
         self.log_viewer = None
         self.unsaved_changes = False
         
+        self.apply_theme()
         self.setup_ui()
         self.load_profiles()
         self.load_last_profile()
-        self.apply_theme()
-    
+
     def setup_ui(self) -> None:
         """Setup UI components."""
         self.setWindowTitle("CustomRPC Manager")
@@ -69,24 +76,82 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
         
         layout = QVBoxLayout(central_widget)
-        
-        # Profile selector
+
+        # Profile Management Group
+        profile_group = QGroupBox("Profile Management")
         profile_layout = QHBoxLayout()
+        
         profile_layout.addWidget(QLabel("Profile:"))
         
         self.profile_combo = QComboBox()
         self.profile_combo.currentTextChanged.connect(self._on_profile_changed)
         profile_layout.addWidget(self.profile_combo, 1)
+
+        # import profile button
+        import_btn = QPushButton()
+        self.icon_manager.set_icon(import_btn, "fa6s.file-import", 20)
+        import_btn.setFixedWidth(30)
+        import_btn.setToolTip("Import Profile")
+        import_btn.clicked.connect(self._import_profile)
+        profile_layout.addWidget(import_btn)
+
+        # export profile button
+        export_btn = QPushButton()
+        self.icon_manager.set_icon(export_btn, "fa6s.file-export", 20)
+        export_btn.setFixedWidth(30)
+        export_btn.setToolTip("Export Profile")
+        export_btn.clicked.connect(self._export_current_profile)
+        profile_layout.addWidget(export_btn)
         
-        load_btn = QPushButton("Load")
-        load_btn.clicked.connect(self._load_selected_profile)
-        profile_layout.addWidget(load_btn)
+        # divider
+        profile_layout.addWidget(QLabel("|"))
+
+        # Delete Profile Button
+        delete_btn = QPushButton()
+        self.icon_manager.set_icon(delete_btn, "mdi6.delete", 20)
+        delete_btn.setFixedWidth(30)
+        delete_btn.setToolTip("Delete Current Profile")
+        delete_btn.setObjectName("dangerous")
+        delete_btn.clicked.connect(self._delete_current_profile)
+        profile_layout.addWidget(delete_btn)
+
+        # Duplicate Profile Button
+        duplicate_btn = QPushButton()
+        self.icon_manager.set_icon(duplicate_btn, "mdi6.content-duplicate", 20)
+        duplicate_btn.setFixedWidth(30)
+        duplicate_btn.setToolTip("Duplicate Current Profile")
+        duplicate_btn.clicked.connect(self._duplicate_current_profile)
+        profile_layout.addWidget(duplicate_btn)
+
+        # rename profile button
+        rename_btn = QPushButton()
+        self.icon_manager.set_icon(rename_btn, "mdi6.pencil", 20)
+        rename_btn.setToolTip("Rename Current Profile")
+        rename_btn.setFixedWidth(30)
+        rename_btn.clicked.connect(self._rename_current_profile)
+        profile_layout.addWidget(rename_btn)
         
-        save_btn = QPushButton("Save")
+        # Save Button
+        save_btn = QPushButton()
+        self.icon_manager.set_icon(save_btn, "mdi6.content-save", 20)
+        save_btn.setFixedWidth(30)
+        save_btn.setToolTip("Save Changes to Current Profile")
         save_btn.clicked.connect(self._save_current_profile)
         profile_layout.addWidget(save_btn)
+
+        # divider
+        profile_layout.addWidget(QLabel("|"))
+
+        # New Profile Button
+        new_btn = QPushButton()
+        self.icon_manager.set_icon(new_btn, "mdi6.plus", 20)
+        new_btn.setToolTip("Create New Profile")
+        new_btn.setFixedWidth(30)
+        new_btn.clicked.connect(self._create_new_profile)
+        profile_layout.addWidget(new_btn)
         
-        layout.addLayout(profile_layout)
+        profile_group.setLayout(profile_layout)
+        layout.addWidget(profile_group)
         
         # RPC Form (in scroll area)
         scroll = QScrollArea()
@@ -114,7 +179,7 @@ class MainWindow(QMainWindow):
         control_layout.addStretch()
         
         layout.addLayout(control_layout)
-        
+
         # Status bar
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
@@ -127,12 +192,6 @@ class MainWindow(QMainWindow):
         # File menu
         file_menu = menubar.addMenu("File")
         
-        new_profile_action = QAction("New Profile", self)
-        new_profile_action.triggered.connect(self._create_new_profile)
-        file_menu.addAction(new_profile_action)
-        
-        file_menu.addSeparator()
-        
         close_action = QAction("Close", self)
         close_action.triggered.connect(self.close)
         file_menu.addAction(close_action)
@@ -143,16 +202,26 @@ class MainWindow(QMainWindow):
 
         # Profiles menu
         profiles_menu = menubar.addMenu("Profiles")
+
+        new_profile_action = QAction("New Profile", self)
+        new_profile_action.triggered.connect(self._create_new_profile)
+        profiles_menu.addAction(new_profile_action)
+
+        profiles_menu.addSeparator()
         
-        rename_action = QAction("Rename Current Profile", self)
+        save_action = QAction("Save", self)
+        save_action.triggered.connect(self._save_current_profile)
+        profiles_menu.addAction(save_action)
+
+        rename_action = QAction("Rename", self)
         rename_action.triggered.connect(self._rename_current_profile)
         profiles_menu.addAction(rename_action)
         
-        duplicate_action = QAction("Duplicate Current Profile", self)
+        duplicate_action = QAction("Duplicate", self)
         duplicate_action.triggered.connect(self._duplicate_current_profile)
         profiles_menu.addAction(duplicate_action)
         
-        delete_action = QAction("Delete Current Profile", self)
+        delete_action = QAction("Delete", self)
         delete_action.triggered.connect(self._delete_current_profile)
         profiles_menu.addAction(delete_action)
         
@@ -162,7 +231,7 @@ class MainWindow(QMainWindow):
         export_action.triggered.connect(self._export_current_profile)
         profiles_menu.addAction(export_action)
         
-        import_action = QAction("Import Profile", self)
+        import_action = QAction("Import", self)
         import_action.triggered.connect(self._import_profile)
         profiles_menu.addAction(import_action)
         
@@ -213,6 +282,7 @@ class MainWindow(QMainWindow):
         """Handle profile selection change."""
         if profile_name:
             self.status_bar.showMessage(f"Selected profile: {profile_name}")
+            self._load_selected_profile()
     
     def _on_form_changed(self) -> None:
         """Handle form data change."""
@@ -261,12 +331,15 @@ class MainWindow(QMainWindow):
         """Create a new profile."""
         name = profile_dialog.show_create_profile_dialog(self)
         if name:
-            # Create with current form data or empty
-            data = self.rpc_form.get_data() if self.rpc_form.get_data()['app_id'] else {}
+            # Create completely new blank profile
+            data = {}
             
             if self.profiles.create_profile(name, data):
                 self.load_profiles()
                 self.profile_combo.setCurrentText(name)
+                # Clear form for new profile
+                self.rpc_form.clear()
+                self.config.set('last_profile', name)
                 QMessageBox.information(self, "Success", f"Profile '{name}' created successfully.")
             else:
                 QMessageBox.critical(self, "Error", f"Failed to create profile '{name}'.")
@@ -395,23 +468,42 @@ class MainWindow(QMainWindow):
             "<p><b>Technologies:</b> Python, PyQt6, pypresence</p>"
         )
     
+    def init_qta_icons(self, theme) -> None:
+        """Load QTA icons dark or light theme."""
+        qta.reset_cache()
+        if theme == 'dark':
+          qta.dark(self.app)
+        else:
+          qta.light(self.app)
+
+        self.icon_manager.refresh()
+
     def apply_theme(self) -> None:
         """Apply theme from config."""
         theme = self.config.get('theme', 'dark')
+        self.init_qta_icons("dark" if theme == "dark" else "light")
         
-        # Load theme file
-        theme_file = Path(__file__).parent.parent / "resources" / "themes" / f"{theme}.qss"
+        # Custom styles to preserve
+        additional_qss = """
+        QPushButton#dangerous {
+            background-color: transparent;
+            border: 1px solid #c75c5c;
+            color: #c75c5c;
+        }
+        QPushButton#dangerous:hover {
+            background-color: #c75c5c22; /* slight tint */
+        }
         
-        if theme_file.exists():
-            try:
-                with open(theme_file, 'r', encoding='utf-8') as f:
-                    stylesheet = f.read()
-                self.setStyleSheet(stylesheet)
-                self.logger.info(f"Applied {theme} theme from {theme_file}")
-            except Exception as e:
-                self.logger.error(f"Failed to load theme file: {e}")
-        else:
-            self.logger.warning(f"Theme file not found: {theme_file}")
+        QPushButton#dangerous:pressed {
+            background-color: #933f3f;
+        }
+        """
+        
+        try:
+            qdarktheme.setup_theme(theme, additional_qss=additional_qss)
+            self.logger.info(f"Applied {theme} theme using pyqtdarktheme")
+        except Exception as e:
+            self.logger.error(f"Failed to apply theme: {e}")
     
     def closeEvent(self, event: QCloseEvent) -> None:
         """

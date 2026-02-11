@@ -7,6 +7,8 @@ requires-python = ">=3.10"
 dependencies = [
     "pypresence>=4.6.1",
     "pyqt6>=6.10.2",
+    "pyqtdarktheme>=2.1.0",
+    "qtawesome>=1.4.1",
 ]
 
 [project.scripts]

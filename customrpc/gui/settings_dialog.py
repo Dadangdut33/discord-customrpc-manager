@@ -10,7 +10,6 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import pyqtSignal
 
-
 class SettingsDialog(QDialog):
     """Dialog for application settings."""
     
@@ -129,7 +128,7 @@ class SettingsDialog(QDialog):
         
         # Behavior
         self.minimize_to_tray_check.setChecked(self.config.get('minimize_to_tray', True))
-    
+
     def save_settings(self) -> None:
         """Save settings to config."""
         # Theme
