@@ -2,13 +2,29 @@
 
 A simple, cross-platform (i hope so, i have only tested it on linux) Discord Rich Presence manager that lets you manually control your Discord status without relying on process detection.
 
+It can be launched from the terminal as headless / tray app, so you can run it as a pre-hook and post-hook in your game launch settings. Example:
+
+```bash
+# connect
+customrpcmanager --profile "My Game" --connect
+# disconnect
+customrpcmanager --disconnect
+```
+
+## Preview
+
+| Feature                                | Screenshots                                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Full Preview in linux (dark mode)**  | ![full preview in linux (dark mode)](./customrpcmanager/resources/preview.png) <br /> |
+| **Full Preview in linux (light mode)** | ![full preview in linux (light mode)](./customrpcmanager/resources/preview-light.png) |
+
 ## Features
 
 - **Cross-Platform**: Works on Linux, Windows, and macOS. (i have only tested it on linux)
 - **GUI Interface**: PyQt6-based interface with dark/light themes
+- **CLI Support**: Headless control via command-line interface
 - **System Tray**: Full system tray integration with background operation
 - **Profile Management**: Create, edit, and manage RPC profiles
-- **CLI Support**: Headless control via command-line interface
 - **Autostart**: Optional run-on-startup with OS-specific implementation
 - **Auto-Connect**: Automatically connect with a profile on startup
 - **Log Viewer**: Built-in log viewer with search and export
@@ -88,6 +104,12 @@ If you install manually (as in the git clone way), you can run the application b
 ### CLI Mode
 
 The CLI allows headless control of the application.
+
+#### Help
+
+```bash
+python main.py --help # or -h
+```
 
 #### List Profiles
 
