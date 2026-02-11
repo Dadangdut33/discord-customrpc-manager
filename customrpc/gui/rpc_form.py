@@ -6,8 +6,7 @@ Provides input fields for all Discord RPC parameters.
 
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QFormLayout, QLineEdit, QSpinBox,
-    QCheckBox, QPushButton, QGroupBox, QHBoxLayout, QTextEdit,
-    QLabel, QMessageBox
+    QCheckBox, QPushButton, QGroupBox, QHBoxLayout, QComboBox
 )
 from PyQt6.QtCore import pyqtSignal
 from typing import Dict, Any, Optional
@@ -16,7 +15,7 @@ from customrpc.utils.validators import (
     validate_app_id, validate_text_field, validate_party_size,
     validate_button_label, validate_url
 )
-
+from pypresence.types import ActivityType
 
 class RPCForm(QWidget):
     """Form widget for RPC field editing."""
@@ -43,9 +42,18 @@ class RPCForm(QWidget):
         app_id_group.setLayout(app_id_layout)
         layout.addWidget(app_id_group)
         
-        # Text fields
+        # Detail fields
         text_group = QGroupBox("Details")
         text_layout = QFormLayout()
+
+        self.activity_type_input = QComboBox()
+        self.activity_type_input.addItems([ActivityType.PLAYING.name, 
+                                            ActivityType.WATCHING.name, 
+                                            ActivityType.LISTENING.name, 
+                                            ActivityType.COMPETING.name, 
+                                            ])
+        self.activity_type_input.currentIndexChanged.connect(self.data_changed.emit)
+        text_layout.addRow("Activity Type:", self.activity_type_input)
 
         self.game_name_input = QLineEdit()
         self.game_name_input.setPlaceholderText("Name of the game (max 128 chars)")
@@ -224,6 +232,7 @@ class RPCForm(QWidget):
         """
         data = {
             'app_id': self.app_id_input.text().strip(),
+            'activity_type': self.activity_type_input.currentText(),
             'game_name': self.game_name_input.text().strip() or None,
             'details': self.details_input.text().strip() or None,
             'state': self.state_input.text().strip() or None,
@@ -263,6 +272,7 @@ class RPCForm(QWidget):
             data: Dictionary with form data
         """
         self.app_id_input.setText(data.get('app_id', ''))
+        self.activity_type_input.setCurrentText(data.get('activity_type', ''))
         self.game_name_input.setText(data.get('game_name', ''))
         self.details_input.setText(data.get('details', ''))
         self.state_input.setText(data.get('state', ''))
@@ -299,6 +309,7 @@ class RPCForm(QWidget):
     def clear(self) -> None:
         """Clear all form fields."""
         self.app_id_input.clear()
+        self.activity_type_input.setCurrentIndex(0)
         self.game_name_input.clear()
         self.details_input.clear()
         self.state_input.clear()

@@ -31,6 +31,8 @@ from customrpc.cli.cli_controller import CLIController
 from customrpc.gui.main_window import MainWindow
 from customrpc.tray.tray_manager import TrayManager
 
+from pypresence.types import ActivityType
+
 
 class CustomRPCApp:
     """Main application class."""
@@ -281,6 +283,8 @@ class CustomRPCApp:
         """Build activity dict from profile data."""
         activity = {}
 
+        if data.get("activity_type"):
+            activity["activity_type"] = ActivityType[data["activity_type"]]
         if data.get('game_name'):
             activity['name'] = data['game_name']
         if data.get('details'):
