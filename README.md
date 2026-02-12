@@ -163,9 +163,9 @@ For more detailed information take a look at [pypresence's docs](https://qwertyq
 
 Configuration files are stored in OS-specific locations:
 
-- **Linux**: `~/.config/customrpc/`
-- **Windows**: `%APPDATA%/CustomRPC/`
-- **macOS**: `~/Library/Application Support/CustomRPC/`
+- **Linux**: `~/.config/CustomRPCManager/`
+- **Windows**: `%APPDATA%/CustomRPCManager/`
+- **macOS**: `~/Library/Application Support/CustomRPCManager/`
 
 Directory structure:
 
