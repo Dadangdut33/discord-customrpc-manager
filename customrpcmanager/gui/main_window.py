@@ -23,6 +23,7 @@ from customrpcmanager.gui.log_viewer import LogViewer
 from customrpcmanager.gui.settings_dialog import SettingsDialog
 from customrpcmanager.gui import profile_dialog
 from customrpcmanager.gui.icon import IconManager
+from customrpcmanager import get_app_version
 
 
 class MainWindow(QMainWindow):
@@ -459,10 +460,11 @@ class MainWindow(QMainWindow):
     
     def _show_about(self) -> None:
         """Show about dialog."""
+        version = get_app_version()
         QMessageBox.about(
             self,
             "About CustomRPC Manager",
-            "<h3>CustomRPC Manager 1.0</h3>"
+            f"<h3>CustomRPC Manager {version}</h3>"
             "<p>A simple custom Discord Rich Presence manager.</p>"
             "<p>A tool to help managing custom RPC to your Discord status.</p>"
             "<p><b>Technologies:</b> Python, PyQt6, pypresence</p>"

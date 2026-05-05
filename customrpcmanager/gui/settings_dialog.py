@@ -6,7 +6,8 @@ Allows users to configure theme, autostart, and other preferences.
 
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QFormLayout, QComboBox,
-    QCheckBox, QPushButton, QHBoxLayout, QGroupBox, QMessageBox
+    QCheckBox, QPushButton, QHBoxLayout, QGroupBox, QMessageBox,
+    QLabel
 )
 from PyQt6.QtCore import pyqtSignal
 
@@ -72,6 +73,22 @@ class SettingsDialog(QDialog):
         self.auto_connect_profile.setEnabled(False)
         profile_layout.addRow("Auto-connect profile:", self.auto_connect_profile)
         startup_layout.addLayout(profile_layout)
+
+        self.launcher_path_label = QLabel()
+        self.launcher_path_label.setWordWrap(True)
+        profile_layout.addRow("Launcher entry:", self.launcher_path_label)
+
+        launcher_btn_layout = QHBoxLayout()
+
+        self.create_launcher_btn = QPushButton("Create or Update Launcher")
+        self.create_launcher_btn.clicked.connect(self._create_launcher_entry)
+        launcher_btn_layout.addWidget(self.create_launcher_btn)
+
+        self.remove_launcher_btn = QPushButton("Remove Launcher")
+        self.remove_launcher_btn.clicked.connect(self._remove_launcher_entry)
+        launcher_btn_layout.addWidget(self.remove_launcher_btn)
+
+        startup_layout.addLayout(launcher_btn_layout)
         
         startup_group.setLayout(startup_layout)
         layout.addWidget(startup_group)
@@ -132,6 +149,50 @@ class SettingsDialog(QDialog):
         # Behavior
         self.minimize_to_tray_check.setChecked(self.config.get('minimize_to_tray', True))
         self.notify_on_status_change.setChecked(self.config.get('notify_on_status_change', True))
+        self._refresh_launcher_ui()
+
+    def _refresh_launcher_ui(self) -> None:
+        """Refresh launcher/shortcut controls."""
+        launcher_path = self.startup.get_launcher_path()
+        exists = self.startup.launcher_exists()
+
+        self.launcher_path_label.setText(str(launcher_path))
+        self.create_launcher_btn.setText(
+            "Update Launcher" if exists else "Create Launcher"
+        )
+        self.remove_launcher_btn.setEnabled(exists)
+
+    def _create_launcher_entry(self) -> None:
+        """Create or update the OS-specific launcher entry."""
+        if self.startup.create_launcher():
+            self._refresh_launcher_ui()
+            QMessageBox.information(
+                self,
+                "Launcher Created",
+                f"Launcher entry is ready at:\n{self.startup.get_launcher_path()}"
+            )
+        else:
+            QMessageBox.warning(
+                self,
+                "Launcher Error",
+                "Failed to create the launcher entry. Check logs for details."
+            )
+
+    def _remove_launcher_entry(self) -> None:
+        """Remove the OS-specific launcher entry."""
+        if self.startup.remove_launcher():
+            self._refresh_launcher_ui()
+            QMessageBox.information(
+                self,
+                "Launcher Removed",
+                "Launcher entry removed successfully."
+            )
+        else:
+            QMessageBox.warning(
+                self,
+                "Launcher Error",
+                "Failed to remove the launcher entry. Check logs for details."
+            )
 
     def save_settings(self) -> None:
         """Save settings to config."""

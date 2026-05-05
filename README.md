@@ -85,6 +85,8 @@ If you install from pipx, you can run the application by typing `customrpcmanage
 - Windows: `%APPDATA%/Microsoft/Windows/Start Menu/Programs/`
 - macOS: `~/Applications/`
 
+You can also create or remove that launcher entry from inside the app via **Settings** using the launcher buttons.
+
 If you install manually (as in the git clone way), you can run the application by typing `python main.py` in your terminal.
 
 #### Creating a Profile

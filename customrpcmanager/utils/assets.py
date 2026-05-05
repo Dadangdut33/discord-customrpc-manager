@@ -14,8 +14,13 @@ def get_resource_path(relative_path: str) -> Path:
     """
     # Determine base path
     if getattr(sys, 'frozen', False):
-        # Running as compiled executable
-        base_path = Path(sys._MEIPASS).parent
+        # Running as a bundled executable (for example PyInstaller).
+        # Resources are extracted into sys._MEIPASS, not its parent.
+        meipass = getattr(sys, "_MEIPASS", None)
+        if meipass:
+            base_path = Path(meipass)
+        else:
+            base_path = Path(sys.executable).resolve().parent / "resources"
     else:
         # Running from source
         # This file is in customrpcmanager/utils/assets.py
